@@ -36,8 +36,10 @@ function xmppStart(core) {
     c2s.on('connect', function(client) {
 
         client.on('authenticate', function(opts, cb) {
-            auth.authenticate(opts.jid.local, opts.password,
-                                              function(err, user) {
+            var username = settings.xmpp.username === 'email' ?
+                opts.jid.toString() : opts.jid.local;
+
+            auth.authenticate(username, opts.password, function(err, user) {
                 if (err || !user) {
                     return cb(false);
                 }
